@@ -22,7 +22,7 @@ class FileStorage:
         reload()
     """
 
-    __file_path = "airbnb_file.json"
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
@@ -49,8 +49,10 @@ class FileStorage:
         """
         Serialize the __objects to the JSON file in path __file_path
 
-        __objects dictionary contains instances of custom classes. We cannot use directly json.dump().
-        We have to call the to_dict() method on each object to convert it into a dictionary representation
+        __objects dictionary contains instances of custom classes.
+        We cannot use directly json.dump().
+        We have to call the to_dict() method on each object to
+        convert it into a dictionary representation
         before serializing it using json.dump().
         """
 
@@ -58,7 +60,7 @@ class FileStorage:
 
         for k, v in FileStorage.__objects.items():
             serial_objects[k] = v.to_dict()
-        
+
         with open(FileStorage.__file_path, mode='w', encoding="utf-8") as f:
             json.dump(serial_objects, f)
 
@@ -69,22 +71,18 @@ class FileStorage:
         """
 
         from models.base_model import BaseModel
-        class_list = [BaseModel]
+        classes = {"BaseModel": BaseModel}
 
         try:
             with open(FileStorage.__file_path, mode='r') as file:
                 obj_data = json.load(file)
-                
-                for val in obj_data.values():
-                    class_name = obj_data["__class__"]
-                    if class_name in class_list:
-                        self.new(class_name(**val))
-                    """
-                    class_module = __import__("models." + class_name,
-                                              fromlist=[class_name])
-                    class_obj = getattr(class_module, class_name)
-                    self.new(class_obj(**val))
-                    """
+
+                if len(obj_data) > 0:
+                    for val in obj_data.values():
+                        class_name = val["__class__"]
+                        if class_name in classes.keys():
+                            class_obj = classes[class_name]
+                            self.new(class_obj(**val))
+
         except FileNotFoundError:
             pass
-
