@@ -71,7 +71,9 @@ class FileStorage:
         """
 
         from models.base_model import BaseModel
-        classes = {"BaseModel": BaseModel}
+        from models.user import User
+
+        classes = {"BaseModel": BaseModel, "User": User}
 
         try:
             with open(FileStorage.__file_path, mode='r') as file:
