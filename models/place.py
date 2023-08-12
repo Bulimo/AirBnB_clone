@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+"""
+module that defines the Place class
+"""
+
 from models.base_model import BaseModel
 
 
@@ -28,8 +33,3 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
-
-    def __init__(self, *args, **kwargs):
-        """_summary_
-        """
-        super().__init__(*args, **kwargs)

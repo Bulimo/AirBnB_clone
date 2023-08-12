@@ -1,8 +1,7 @@
 #!/usr/bin/python3
-"""_summary_
-
-    Returns:
-        _type_: _description_
+"""
+Defines the BaeModel class
+Parent to all classes
 """
 
 from datetime import datetime
@@ -23,7 +22,7 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """
         Initializes a BaseModel instance object
-        If it’s a new instance (not from a dictionary representation),
+        If it is a new instance (not from a dictionary representation),
         add a call to the method new(self) on storage.
 
         Args:
