@@ -5,14 +5,9 @@ Defines class HBNBCommand()
 """
 import cmd
 import readline
+import re
 from models import storage
 from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -60,6 +55,25 @@ class HBNBCommand(cmd.Cmd):
 
         print("Usage: quit")
         print("command exits the comand line interpreter program")
+
+    def precmd(self, line):
+        """_summary_
+
+        Args:
+            line (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        match = re.search("^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
+        if not match:
+            return line
+        classname = match.group(1)
+        method = match.group(2)
+        args = match.group(3)
+        command = method + " " + classname + " " + args
+        self.onecmd(command)
+        return ""
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel
@@ -175,21 +189,41 @@ class HBNBCommand(cmd.Cmd):
         key = args[0] + "." + args[1]
         instances = storage.all()
 
-        if key not in instances:
+        if key in instances:
+            if len(args) < 3:
+                print("** dictionary missing **")
+                return
+
+            try:
+                instance = instances[key]
+                update_dict = eval("{" + args[2] + "}")
+                for attr, value in update_dict.items():
+                    setattr(instance, attr, value)
+                instance.save()
+            except NameError:
+                print("** invalid dictionary format **")
+        else:
             print("** no instance found **")
+
+    def do_count(self, arg):
+        """
+        Retrieve the number of instances of a class
+
+        Usage:
+            count <class name>
+        """
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
             return
 
-        if len(args) < 3:
-            print("** attribute name missing **")
+        if args[0] not in storage.classes:
+            print("** class doesn't exist **")
             return
 
-        if len(args) < 4:
-            print("** value missing **")
-            return
-
-        instance = instances[key]
-        setattr(instance, args[2], args[3])
-        instance.save()
+        instances = storage.all()
+        count = sum(1 for key in instances if key.startswith(args[0] + "."))
+        print(count)
 
 
 if __name__ == '__main__':

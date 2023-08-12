@@ -8,3 +8,8 @@ class Amenity(BaseModel):
         name: string - empty string
     """
     name = ""
+
+    def __init__(self, *args, **kwargs):
+        """_summary_
+        """
+        super().__init__(*args, **kwargs)
