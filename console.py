@@ -266,6 +266,8 @@ class HBNBCommand(cmd.Cmd):
         class_name = args[0]
         if args[1] == "all()":
             HBNBCommand.do_all(self, class_name)
+        elif args[1] == "count()":
+            HBNBCommand.do_count(self, class_name)
         else:
             print("*** Unknown syntax: {}".format(arg))
 
