@@ -6,7 +6,7 @@ Parent to all classes
 
 from datetime import datetime
 from models import storage
-import uuid
+from uuid import uuid4
 
 
 class BaseModel:
@@ -38,7 +38,7 @@ class BaseModel:
                 if k != "__class__":
                     setattr(self, k, v)
         else:
-            self.id = str(uuid.uuid4())
+            self.id = str(uid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             storage.new(self)
