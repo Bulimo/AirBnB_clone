@@ -281,9 +281,10 @@ class HBNBCommand(cmd.Cmd):
             instance_id = update_args[0]
 
             if update_args[1].startswith("{") and update_args[1].endswith("}"):
-                dict_repr = update_args[1]
+                dict_repr = update_args[1].strip()[1:-1]
+                update_dict = eval(dict_repr)
                 update_command = "{} {} {}".format(class_name,
-                                                   instance_id, dict_repr)
+                                                   instance_id, update_dict)
                 HBNBCommand.do_update(self, update_command)
             else:
                 attribute_name = update_args[1].strip()
