@@ -5,6 +5,7 @@ Module for testing the Review class
 import json
 import os
 import unittest
+from models import storage
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.review import Review
@@ -133,6 +134,34 @@ class testReview(unittest.TestCase):
         objs = file.all()
 
         self.assertIn("Review." + review_id, objs.keys())
+
+    def test_review_str_(self):
+        """
+        Test __str__() method
+        """
+        review = Review()
+        expected_str = "[Review] ({}) {}".format(review.id, review.__dict__)
+        self.assertEqual(str(review), expected_str)
+
+    def test_review_update_attributes(self):
+        """Test updating attributes"""
+        review = Review()
+        review.text = 'good'
+        review.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_review = new_storage.all()['Review.{}'.format(review.id)]
+        self.assertEqual(loaded_review.text, 'good')
+
+    def test_saving_and_loading(self):
+        """ Test saving and loading from storage """
+        review = Review()
+        review_id = review.id
+        storage.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_review = new_storage.all()['Review.{}'.format(review_id)]
+        self.assertIsInstance(loaded_review, Review)
 
 
 if __name__ == "__main__":

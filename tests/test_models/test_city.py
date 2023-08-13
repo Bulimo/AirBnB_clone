@@ -5,6 +5,7 @@ Module for testing the City class
 import json
 import os
 import unittest
+from models import storage
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.city import City
@@ -143,6 +144,34 @@ class testCity(unittest.TestCase):
         objs = file.all()
 
         self.assertIn("City." + city_id, objs.keys())
+
+    def test_city_str_(self):
+        """
+        Test __str__() method
+        """
+        city = City()
+        expected_str = "[City] ({}) {}".format(city.id, city.__dict__)
+        self.assertEqual(str(city), expected_str)
+
+    def test_city_update_attributes(self):
+        """Test updating attributes"""
+        city = City()
+        city.name = 'nairobi'
+        city.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_city = new_storage.all()['City.{}'.format(city.id)]
+        self.assertEqual(loaded_city.name, 'nairobi')
+
+    def test_saving_and_loading(self):
+        """ Test saving and loading from storage """
+        city = City()
+        city_id = city.id
+        storage.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_city = new_storage.all()['City.{}'.format(city_id)]
+        self.assertIsInstance(loaded_city, City)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ Module for testing the Amenity class
 import json
 import os
 import unittest
+from models import storage
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.amenity import Amenity
@@ -131,7 +132,7 @@ class testAmenity(unittest.TestCase):
 
     def test_amenity_reload_from_file(self):
         """
-        Test that the City instance can be reloaded from the file
+        Test that the amenity instance can be reloaded from the file
         """
         amenity = Amenity()
         file = FileStorage()
@@ -142,6 +143,34 @@ class testAmenity(unittest.TestCase):
         objs = file.all()
 
         self.assertIn("Amenity." + amenity_id, objs.keys())
+
+    def test_amenity_str_(self):
+        """
+        Test __str__() method
+        """
+        amenity = Amenity()
+        expected_str = "[Amenity] ({}) {}".format(amenity.id, amenity.__dict__)
+        self.assertEqual(str(amenity), expected_str)
+
+    def test_amenity_update_attributes(self):
+        """Test updating attributes"""
+        amenity = Amenity()
+        amenity.name = 'nairobi'
+        amenity.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_amenity = new_storage.all()['Amenity.{}'.format(amenity.id)]
+        self.assertEqual(loaded_amenity.name, 'nairobi')
+
+    def test_saving_and_loading(self):
+        """ Test saving and loading from storage """
+        amenity = Amenity()
+        amenity_id = amenity.id
+        storage.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_amenity = new_storage.all()['Amenity.{}'.format(amenity_id)]
+        self.assertIsInstance(loaded_amenity, Amenity)
 
 
 if __name__ == "__main__":
