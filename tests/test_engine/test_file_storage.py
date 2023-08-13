@@ -9,6 +9,12 @@ import os
 import unittest
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class testFileStorage(unittest.TestCase):
@@ -134,6 +140,22 @@ class testFileStorage(unittest.TestCase):
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             self.assertIn(key, dict_objects)
             self.assertEqual(dict_objects[key], obj.to_dict())
+
+    def test_reload_from_empty(self):
+        """
+        Tests reload from empty file
+        """
+        file_obj = FileStorage()
+        try:
+            os.remove("file.json")
+        except Exception:
+            pass
+        with open("file.json", "w") as f:
+            f.write("{}")
+        with open("file.json", "r") as r:
+            for line in r:
+                self.assertEqual(line, "{}")
+        self.assertIs(file_obj.reload(), None)
 
 
 if __name__ == "__main__":
