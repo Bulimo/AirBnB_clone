@@ -94,52 +94,34 @@ class HBNBCommand(cmd.Cmd):
 
         print("create <object_name>")
 
-    # def do_show(self, arg):
-    #     """Prints the string representation of
-    #     an instance based on the class name
+    def do_show(self, arg):
+        """Prints the string representation of
+        an instance based on the class name
 
-    #     Args:
-    #         arg (_type_): _description_
-    #     """
-    #     if not arg or len(arg) == 0:
-    #         print("** class name missing **")
-    #         return
-
-    #     args = arg.split()
-
-    #     if args[0] not in HBNBCommand.classes.keys():
-    #         print("** class doesn't exist **")
-    #         return
-
-    #     if len(args) < 2:
-    #         print("** instance id missing **")
-    #         return
-
-    #     key = "{}.{}".format(args[0], args[1])
-    #     instances = storage.all()
-
-    #     if key in instances:
-    #         print(instances[key])
-    #     else:
-    #         print("** no instance found **")
-
-    def do_show(self, line):
-        """Prints the string representation of an
-        instance based on the class name and id"""
-        if line == "" or line is None:
+        Args:
+            arg (_type_): _description_
+        """
+        if not arg or len(arg) == 0:
             print("** class name missing **")
+            return
+
+        args = arg.split()
+
+        if args[0] not in HBNBCommand.classes.keys():
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        key = "{}.{}".format(args[0], args[1])
+        instances = storage.all()
+
+        if key in instances:
+            print(instances[key])
         else:
-            args = line.split(' ')
-            if args[0] not in storage.classes():
-                print("** class doesn't exist **")
-            elif len(args) < 2:
-                print("** instance id missing **")
-            else:
-                key = "{}.{}".format(args[0], args[1])
-                if key not in storage.all():
-                    print("** no instance found **")
-                else:
-                    print(storage.all()[key])
+            print("** no instance found **")
 
     def help_show(self):
         """
@@ -284,14 +266,6 @@ class HBNBCommand(cmd.Cmd):
         class_name = args[0]
         if args[1] == "all()":
             HBNBCommand.do_all(self, class_name)
-        elif args[1] == "count()":
-            HBNBCommand.do_count(self, class_name)
-        elif args[1] == "show()":
-            HBNBCommand.do_show(self, class_name)
-        elif args[1] == "destroy()":
-            HBNBCommand.do_destroy(self, class_name)
-        elif args[1] == "update()":
-            HBNBCommand.do_update(self, class_name)
         else:
             print("*** Unknown syntax: {}".format(arg))
 
