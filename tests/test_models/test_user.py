@@ -5,6 +5,7 @@ Module for testing the User class
 import json
 import os
 import unittest
+from models import storage
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.user import User
@@ -135,6 +136,34 @@ class testUser(unittest.TestCase):
         objs = file.all()
 
         self.assertIn("User." + user_id, objs.keys())
+
+    def test_user_str_(self):
+        """
+        Test __str__() method
+        """
+        user = User()
+        expected_str = "[User] ({}) {}".format(user.id, user.__dict__)
+        self.assertEqual(str(user), expected_str)
+
+    def test_user_update_attributes(self):
+        """Test updating attributes"""
+        user = User()
+        user.email = 'test@example.com'
+        user.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_user = new_storage.all()['User.{}'.format(user.id)]
+        self.assertEqual(loaded_user.email, 'test@example.com')
+
+    def test_saving_and_loading(self):
+        """ Test saving and loading from storage """
+        user = User()
+        user_id = user.id
+        storage.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_user = new_storage.all()['User.{}'.format(user_id)]
+        self.assertIsInstance(loaded_user, User)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ Module for testing the State class
 import json
 import os
 import unittest
+from models import storage
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.state import State
@@ -131,6 +132,34 @@ class testState(unittest.TestCase):
         objs = file.all()
 
         self.assertIn("State." + state_id, objs.keys())
+
+    def test_state_str_(self):
+        """
+        Test __str__() method
+        """
+        state = State()
+        expected_str = "[State] ({}) {}".format(state.id, state.__dict__)
+        self.assertEqual(str(state), expected_str)
+
+    def test_state_update_attributes(self):
+        """Test updating attributes"""
+        state = State()
+        state.name = 'nairobi'
+        state.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_state = new_storage.all()['State.{}'.format(state.id)]
+        self.assertEqual(loaded_state.name, 'nairobi')
+
+    def test_saving_and_loading(self):
+        """ Test saving and loading from storage """
+        state = State()
+        state_id = state.id
+        storage.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_state = new_storage.all()['State.{}'.format(state_id)]
+        self.assertIsInstance(loaded_state, State)
 
 
 if __name__ == "__main__":

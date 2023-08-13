@@ -6,6 +6,7 @@ Module for testing the Place class
 import json
 import os
 import unittest
+from models import storage
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.place import Place
@@ -141,6 +142,34 @@ class testPlace(unittest.TestCase):
         objs = file.all()
 
         self.assertIn("Place." + place_id, objs.keys())
+
+    def test_place_str_(self):
+        """
+        Test __str__() method
+        """
+        place = Place()
+        expected_str = "[Place] ({}) {}".format(place.id, place.__dict__)
+        self.assertEqual(str(place), expected_str)
+
+    def test_place_update_attributes(self):
+        """Test updating attributes"""
+        place = Place()
+        place.name = 'nairobi'
+        place.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_place = new_storage.all()['Place.{}'.format(place.id)]
+        self.assertEqual(loaded_place.name, 'nairobi')
+
+    def test_saving_and_loading(self):
+        """ Test saving and loading from storage """
+        place = Place()
+        place_id = place.id
+        storage.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_place = new_storage.all()['Place.{}'.format(place_id)]
+        self.assertIsInstance(loaded_place, Place)
 
 
 if __name__ == "__main__":

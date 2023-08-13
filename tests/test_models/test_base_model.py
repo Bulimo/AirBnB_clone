@@ -6,6 +6,7 @@ import json
 import unittest
 import models
 import os
+from models import storage
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from datetime import datetime
@@ -127,14 +128,21 @@ class TestBaseModel(unittest.TestCase):
         Test that the BaseModel instance can be reloaded from the file
         """
         base = BaseModel()
-        file = FileStorage()
-        base.save()
-        base_id = base.id
+        base_model_id = base.id
+        storage.save()
+        new_storage = FileStorage()
+        new_storage.reload()
+        loaded_base_model = new_storage.all()[
+            'BaseModel.{}'.format(base_model_id)]
+        self.assertIsInstance(loaded_base_model, BaseModel)
 
-        file.reload()
-        objs = file.all()
-
-        self.assertIn("BaseModel." + base_id, objs.keys())
+    def test_base_str_(self):
+        """
+        Test __str__() method
+        """
+        base = BaseModel()
+        expected_str = "[BaseModel] ({}) {}".format(base.id, base.__dict__)
+        self.assertEqual(str(base), expected_str)
 
 
 if __name__ == "__main__":

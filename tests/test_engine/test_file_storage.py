@@ -8,7 +8,6 @@ import json
 import os
 import unittest
 from models.base_model import BaseModel
-from models import storage
 from models.engine.file_storage import FileStorage
 
 
@@ -41,6 +40,7 @@ class testFileStorage(unittest.TestCase):
         """
 
         self.assertFalse(hasattr(FileStorage, "__file_path"))
+        self.assertTrue(hasattr(FileStorage, "_FileStorage__file_path"))
         self.assertFalse(hasattr(FileStorage, "__objects"))
 
     def test_object_created(self):
@@ -89,23 +89,6 @@ class testFileStorage(unittest.TestCase):
         except FileNotFoundError:
             self.fail("raised FileNotFoundError")
 
-    # def test_load_empty_file(self):
-    #    """
-    #    test loading from an empty file
-    #   """
-
-    #    if os.path.exists("file.json"):
-    #        print("remove file.json")
-    #        os.remove("file.json")
-    #    obj = FileStorage()
-    #    path = "file.json"
-    #    with open(path, mode="w") as file:
-    #        file.write(json.dumps({}))
-    #    obj.reload()
-    #    objs = obj.all()
-    #    print(objs)
-    #    self.assertEqual(len(objs), 0)
-
     def test_with_base_model(self):
         """
         Test that the FileStorage correctly intergrates with BaseModel
@@ -117,6 +100,40 @@ class testFileStorage(unittest.TestCase):
 
         objs = file_obj.all()
         self.assertIn(base_obj, objs.values())
+
+    def test_all(self):
+        """
+        Test the all method
+        """
+        obj = BaseModel()
+        file_obj = FileStorage()
+        objects = file_obj.all()
+        # check that it is a dictionary
+        self.assertIsInstance(objects, dict)
+        # check that it has the correct key and value
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.assertIn(key, objects)
+        self.assertEqual(objects[key], obj)
+
+    def test_save(self):
+        """
+        Test that the save method
+        """
+        # create a new BaseModel instance and add it to __objects
+        obj = BaseModel()
+        file_obj = FileStorage()
+        file_obj.new(obj)
+        file_obj.save()
+        self.assertTrue(os.path.exists("file.json"))
+        # open the file and load it as a dictionary
+        with open("file.json", "r") as f:
+            dict_objects = json.load(f)
+            # check that it is a dictionary
+            self.assertIsInstance(dict_objects, dict)
+            # check that it has the correct key and value
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            self.assertIn(key, dict_objects)
+            self.assertEqual(dict_objects[key], obj.to_dict())
 
 
 if __name__ == "__main__":
