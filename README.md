@@ -25,9 +25,48 @@
 
 #### Starting the console
 
+    You start the console by typing the command below:
+        $ ./console.py
+
+
 #### Using the console
 
+Commands	Sample Usage	            Functionality
+help	    help	                    displays all commands available
+create	    create <class>	            creates new object of type class
+update	    User.update	                updates attribute of an object
+destroy	    User.destroy('123')	        destroys specified object
+show	    User.show('123')	        retrieve an object from a file, a database
+all	        User.all()	                display all objects in class
+count	    User.count()	            returns count of objects in specified class
+quit	    quit	                    exits
+
 #### Examples
+
+    $ ./console.py
+    (hbnb) help
+
+    Documented commands (type help <topic>):
+    ========================================
+    EOF  all  count  create  destroy  help  quit  show  update
+
+    (hbnb)
+    (hbnb)
+    (hbnb) create User
+    0068a8e3-e8e3-4a65-90c8-0bcd639edbed
+    (hbnb) all
+    ["[User] (f9694ebe-3b7f-4db6-b4ba-3f252c71d482) {'id': 'f9694ebe-3b7f-4db6-b4ba-3f252c71d482', 'created_at': datetime.datetime(2023, 8, 14, 1, 37, 31, 944987), 'updated_at': datetime.datetime(2023, 8, 14, 1, 37, 31, 945011)}", "[User] (0068a8e3-e8e3-4a65-90c8-0bcd639edbed) {'id': '0068a8e3-e8e3-4a65-90c8-0bcd639edbed', 'created_at': datetime.datetime(2023, 8, 14, 2, 1, 12, 599768), 'updated_at': datetime.datetime(2023, 8, 14, 2, 1, 12, 599821)}"]
+    (hbnb) create City
+    accb9445-673d-4fc6-973a-2fe3f942c2a3
+    (hbnb) show City accb9445-673d-4fc6-973a-2fe3f942c2a3
+    [City] (accb9445-673d-4fc6-973a-2fe3f942c2a3) {'id': 'accb9445-673d-4fc6-973a-2fe3f942c2a3', 'created_at': datetime.datetime(2023, 8, 14, 2, 1, 40, 931089), 'updated_at': datetime.datetime(2023, 8, 14, 2, 1, 40, 931163)}
+    (hbnb) 
+    (hbnb) 
+    (hbnb) help update
+    update <class name> <id> <attribute name> "<attribute value>"
+    (hbnb) quit
+    $
+
 
 ## Description of files and directories
 
