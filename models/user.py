@@ -16,3 +16,13 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
+
+    def __init__(self, *args, **kwargs):
+        """
+        Method to initialize the User class instance
+
+        Args:
+            args - variable arguments
+            kwargs - key word arguments
+        """
+        super().__init__(*args, **kwargs)

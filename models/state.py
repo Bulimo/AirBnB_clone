@@ -15,6 +15,11 @@ class State(BaseModel):
     name = ""
 
     def __init__(self, *args, **kwargs):
-        """_summary_
+        """
+        Method to initialize the State class instance
+
+        Args:
+            args - variable arguments
+            kwargs - key word arguments
         """
         super().__init__(*args, **kwargs)

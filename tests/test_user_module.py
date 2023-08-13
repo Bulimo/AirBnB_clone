@@ -4,7 +4,6 @@ Module for testing the User class
 """
 
 import unittest
-# from models.base_model import User
 from models.engine.file_storage import FileStorage
 from models.user import User
 
@@ -62,3 +61,8 @@ class testUser(unittest.TestCase):
 
         doc = User.__doc__
         self.assertGreater(len(doc), 3)
+        self.assertGreater(len(User.__init__.__doc__), 3)
+
+
+if __name__ == "__main__":
+    unittest.main()

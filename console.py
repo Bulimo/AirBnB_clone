@@ -8,6 +8,12 @@ import readline
 import re
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -19,6 +25,15 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "
+    classes = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "State": State,
+            "City": City,
+            "Amenity": Amenity,
+            "Place": Place,
+            "Review": Review
+        }
 
     def emptyline(self):
         """
@@ -56,14 +71,14 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: quit")
         print("command exits the comand line interpreter program")
 
-    def precmd(self, line):
-        """_summary_
+    # def precmd(self, line):
+    #    """_summary_
 
-        Args:
-            line (_type_): _description_
+    #    Args:
+    #        line (_type_): _description_
 
-        Returns:
-            _type_: _description_
+    #    Returns:
+    #        _type_: _description_
         """
         match = re.search("^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
         if not match:
@@ -73,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
         args = match.group(3)
         command = method + " " + classname + " " + args
         self.onecmd(command)
-        return ""
+        return """
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel

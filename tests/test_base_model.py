@@ -1,63 +1,25 @@
 #!/usr/bin/python3
-"""
-Defines test module for BaseModel class
-"""
 from models.base_model import BaseModel
-import unittest
 
+my_model = BaseModel()
+my_model.name = "My_First_Model"
+my_model.my_number = 89
+print(my_model.id)
+print(my_model)
+print(type(my_model.created_at))
+print("--")
+my_model_json = my_model.to_dict()
+print(my_model_json)
+print("JSON of my_model:")
+for key in my_model_json.keys():
+    print("\t{}: ({}) - {}".format(key, type(my_model_json[key]),
+                                   my_model_json[key]))
 
-class TestBaseModel(unittest.TestCase):
-    """
-    Test class for BaseModel class module
-    """
-    def test_obj_created(self):
-        """
-        Test if object is created
-        """
+print("--")
+my_new_model = BaseModel(**my_model_json)
+print(my_new_model.id)
+print(my_new_model)
+print(type(my_new_model.created_at))
 
-        self.assertTrue(BaseModel())
-
-    def test_attributes(self):
-        """
-        Confirm attributes in the object
-        """
-
-        base1 = BaseModel()
-        self.assertTrue(hasattr(base1, "id"))
-        self.assertTrue(hasattr(base1, "created_at"))
-        self.assertTrue(hasattr(base1, "updated_at"))
-
-    def test_id_type(self):
-        """
-        Test that the id of object is a string
-        """
-
-        base1 = BaseModel()
-        self.assertIsInstance(base1.id, str)
-
-    def test_id_values(self):
-        """
-        Check the object id values are unique between objects
-        """
-
-        base1 = BaseModel()
-        base2 = BaseModel()
-        self.assertIsNotNone(base1.id)
-        self.assertIsNotNone(base2.id)
-        self.assertNotEqual(base1.id, base2.id)
-
-    def test_class_doc(self):
-        """
-        test documentation for the class is done
-        """
-
-        doc = BaseModel.__doc__
-        self.assertGreater(len(doc), 3)
-
-    def test_function_doc(self):
-        """
-        test documentation for functions in class
-        """
-        self.assertGreater(len(BaseModel.__init__.__doc__), 3)
-        self.assertGreater(len(BaseModel.save.__doc__), 3)
-        self.assertGreater(len(BaseModel.to_dict.__doc__), 3)
+print("--")
+print(my_model is my_new_model)

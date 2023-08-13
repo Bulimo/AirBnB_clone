@@ -15,3 +15,13 @@ class City(BaseModel):
     """
     state_id = ""
     name = ""
+
+    def __init__(self, *args, **kwargs):
+        """
+        Method to initialize the City class instance
+
+        Args:
+            args - variable arguments
+            kwargs - key word arguments
+        """
+        super().__init__(*args, **kwargs)
