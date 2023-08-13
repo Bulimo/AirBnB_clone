@@ -282,7 +282,9 @@ class HBNBCommand(cmd.Cmd):
 
             if update_args.startswith("{") and update_args.endswith("}"):
                 try:
-                    update_dict = eval(update_args)
+                    update_dict = {
+                        k.strip('\'\"'): v for k, v in update_dict.items()
+                        }
                     if isinstance(update_dict, dict):
                         update_command = "{} {} {}".format(class_name,
                                                            instance_id,
