@@ -268,6 +268,10 @@ class HBNBCommand(cmd.Cmd):
             HBNBCommand.do_all(self, class_name)
         elif args[1] == "count()":
             HBNBCommand.do_count(self, class_name)
+        elif args[1].startswith("show(") and args[1].endswith(")"):
+            instance_id = args[1][6:-2]
+            show_command = "{} {}".format(class_name, instance_id)
+            HBNBCommand.do_show(self, show_command)
         else:
             print("*** Unknown syntax: {}".format(arg))
 
