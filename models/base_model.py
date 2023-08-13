@@ -34,7 +34,7 @@ class BaseModel:
         if kwargs:
             for k, v in kwargs.items():
                 if k == "created_at" or k == "updated_at":
-                    v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
+                    v = datetime.fromisoformat(v)
                 if k != "__class__":
                     setattr(self, k, v)
         else:
@@ -51,7 +51,7 @@ class BaseModel:
             Str: string representation of the object
         """
 
-        return "[{}] ({}) {}".format(self.__class__.__name__,
+        return "[{}] ({}) {}".format(type(self).__name__,
                                      self.id, self.__dict__)
 
     def save(self):
