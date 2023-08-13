@@ -279,14 +279,21 @@ class HBNBCommand(cmd.Cmd):
         elif args[1].startswith("update(") and args[1].endswith(")"):
             update_args = args[1][7:-2].split(', ')
             instance_id = update_args[0]
-            attribute_name = update_args[1].strip()
-            attribute_value = update_args[2].strip()
-            update_command = (
-                "{} {} {} {}"
-                .format(class_name, instance_id,
-                        attribute_name, attribute_value)
-            )
-            HBNBCommand.do_update(self, update_command)
+
+            if update_args[1].startswith("{") and update_args[1].endswith("}"):
+                dict_repr = update_args[1]
+                update_command = "{} {} {}".format(class_name,
+                                                   instance_id, dict_repr)
+                HBNBCommand.do_update(self, update_command)
+            else:
+                attribute_name = update_args[1].strip()
+                attribute_value = update_args[2].strip()
+                update_command = (
+                    "{} {} {} {}"
+                    .format(class_name, instance_id,
+                            attribute_name, attribute_value)
+                )
+                HBNBCommand.do_update(self, update_command)
         else:
             print("*** Unknown syntax: {}".format(arg))
 
