@@ -281,12 +281,10 @@ class HBNBCommand(cmd.Cmd):
             instance_id = update_args[0]
             attribute_name = update_args[1]
             attribute_value = update_args[2][1:-1]
-            update_command = (
-                "{} {} {} {}"
-                .format(class_name, instance_id,
-                        attribute_name, attribute_value)
-            )
-
+            update_command = "{} {} {} {}".format(class_name,
+                                                  instance_id,
+                                                  attribute_name,
+                                                  attribute_value)
             HBNBCommand.do_update(self, update_command)
         else:
             print("*** Unknown syntax: {}".format(arg))
