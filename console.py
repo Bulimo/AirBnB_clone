@@ -277,22 +277,29 @@ class HBNBCommand(cmd.Cmd):
             destroy_command = "{} {}".format(class_name, instance_id)
             HBNBCommand.do_destroy(self, destroy_command)
         elif args[1].startswith("update(") and args[1].endswith(")"):
-            update_args = args[1][7:-2].split(', ')
-            instance_id = update_args[0]
+            instance_id = args[1].split(',')[0][7:].strip()
+            update_args = ', '.join(args[1].split(',')[1:]).strip()
 
-            if update_args[1].startswith("{") and update_args[1].endswith("}"):
-                dict_repr = ' '.join(update_args[1:])
-                update_command = "{} {} {}".format(class_name,
-                                                   instance_id, dict_repr)
-                HBNBCommand.do_update(self, update_command)
+            if update_args.startswith("{") and update_args.endswith("}"):
+                try:
+                    update_dict = eval(update_args)
+                    if isinstance(update_dict, dict):
+                        update_command = "{} {} {}".format(class_name,
+                                                           instance_id,
+                                                           update_dict)
+                        HBNBCommand.do_update(self, update_command)
+                    else:
+                        print("** Invalid dictionary representation **")
+                except Exception as e:
+                    print("** Error evaluating dictionary \
+                          representation: {} **".format(e))
             else:
-                attribute_name = update_args[1].strip()
-                attribute_value = update_args[2].strip()
-                update_command = (
-                    "{} {} {} {}"
-                    .format(class_name, instance_id,
-                            attribute_name, attribute_value)
-                )
+                attribute_name = update_args.split(',')[0].strip()
+                attribute_value = update_args.split(',')[1].strip()
+                update_command = "{} {} {} {}".format(class_name,
+                                                      instance_id,
+                                                      attribute_name,
+                                                      attribute_value)
                 HBNBCommand.do_update(self, update_command)
         else:
             print("*** Unknown syntax: {}".format(arg))
