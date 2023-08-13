@@ -272,6 +272,10 @@ class HBNBCommand(cmd.Cmd):
             instance_id = args[1][6:-2]
             show_command = "{} {}".format(class_name, instance_id)
             HBNBCommand.do_show(self, show_command)
+        elif args[1].startswith("destroy(") and args[1].endswith(")"):
+            instance_id = args[1][9:-2]
+            destroy_command = "{} {}".format(class_name, instance_id)
+            HBNBCommand.do_destroy(self, destroy_command)
         else:
             print("*** Unknown syntax: {}".format(arg))
 
