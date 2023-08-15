@@ -220,6 +220,8 @@ class HBNBCommand(cmd.Cmd):
                 instance.save()
             else:
                 print("** no instance found **")
+        elif args[0] not in HBNBCommand.classes.keys():
+            print("** class doesn't exist **")
         elif len(args) < 2:
             print("** instance id missing **")
         elif len(args) < 3:

@@ -71,8 +71,8 @@ class TestConsole(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as fake_output:
             self.command.onecmd("User.all()")
-            self.assertEqual("[[User]",
-                             fake_output.getvalue()[:7])
+            self.assertEqual('["[User]',
+                             fake_output.getvalue()[:8])
 
     def test_all(self):
         """Test all command"""
@@ -126,7 +126,7 @@ class TestConsole(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as fake_output:
             self.command.onecmd("update BaseModel 12345")
-            self.assertEqual("** no instance found **\n",
+            self.assertEqual("** attribute name missing **\n",
                              fake_output.getvalue())
 
     def test_show(self):
