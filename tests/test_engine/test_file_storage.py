@@ -17,7 +17,7 @@ from models.place import Place
 from models.review import Review
 
 
-class testFileStorage(unittest.TestCase):
+class TestFileStorage(unittest.TestCase):
     """
     Test the file storage Module
     """
