@@ -78,6 +78,17 @@ class testState(unittest.TestCase):
         self.assertGreater(len(State.__doc__), 3)
         self.assertGreater(len(State.__init__.__doc__), 3)
 
+    def test_state_name(self):
+        """
+        Test that the name of State instance can be updated
+        """
+
+        state_1 = State()
+        self.assertIsInstance(state_1.name, str)
+        self.assertEqual(state_1.name, "")
+        state_1.name = "Nairobi"
+        self.assertTrue(state_1.name, "Nairobi")
+
     def test_state_created_updated_at(self):
         """
         tests that state updated and created at times are datetime

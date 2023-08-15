@@ -88,6 +88,37 @@ class testPlace(unittest.TestCase):
         self.assertGreater(len(Place.__doc__), 3)
         self.assertGreater(len(Place.__init__.__doc__), 3)
 
+    def test_place_name(self):
+        """
+        Test that the name of Place instance can be updated
+        """
+
+        place_1 = Place()
+        self.assertIsInstance(place_1.name, str)
+        self.assertIsInstance(place_1.user_id, str)
+        self.assertIsInstance(place_1.city_id, str)
+        self.assertIsInstance(place_1.description, str)
+        self.assertIsInstance(place_1.number_bathrooms, int)
+        self.assertIsInstance(place_1.number_rooms, int)
+        self.assertIsInstance(place_1.max_guest, int)
+        self.assertIsInstance(place_1.price_by_night, int)
+        self.assertIsInstance(place_1.latitude, float)
+        self.assertIsInstance(place_1.longitude, float)
+        self.assertIsInstance(place_1.amenity_ids, list)
+        self.assertEqual(place_1.name, "")
+        self.assertEqual(place_1.user_id, "")
+        self.assertEqual(place_1.city_id, "")
+        self.assertEqual(place_1.description, "")
+        self.assertEqual(place_1.number_bathrooms, 0)
+        self.assertEqual(place_1.number_rooms, 0)
+        self.assertEqual(place_1.price_by_night, 0)
+        self.assertEqual(place_1.max_guest, 0)
+        self.assertEqual(place_1.longitude, 0.0)
+        self.assertEqual(place_1.latitude, 0.0)
+        self.assertEqual(place_1.amenity_ids, [])
+        place_1.name = "Nairobi"
+        self.assertTrue(place_1.name, "Nairobi")
+
     def test_place_created_updated_at(self):
         """
         tests that place updated and created at times are datetime

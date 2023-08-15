@@ -80,6 +80,21 @@ class testReview(unittest.TestCase):
         self.assertGreater(len(Review.__doc__), 3)
         self.assertGreater(len(Review.__init__.__doc__), 3)
 
+    def test_review_attr(self):
+        """
+        Test that the name of City instance can be updated
+        """
+
+        review_1 = Review()
+        self.assertIsInstance(review_1.text, str)
+        self.assertIsInstance(review_1.place_id, str)
+        self.assertIsInstance(review_1.user_id, str)
+        self.assertEqual(review_1.text, "")
+        self.assertEqual(review_1.place_id, "")
+        self.assertEqual(review_1.user_id, "")
+        review_1.text = "Awesome"
+        self.assertTrue(review_1.text, "Awesome")
+
     def test_review_created_updated_at(self):
         """
         tests that review updated and created at times are datetime

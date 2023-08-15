@@ -165,6 +165,30 @@ class testUser(unittest.TestCase):
         loaded_user = new_storage.all()['User.{}'.format(user_id)]
         self.assertIsInstance(loaded_user, User)
 
+    def test_first_name(self):
+        """Test first_name class attribute"""
+        user = User()
+        self.assertIsInstance(user.first_name, str)
+        self.assertEqual(user.first_name, "")
+
+    def test_last_name(self):
+        """Test last_name class attribute"""
+        user = User()
+        self.assertIsInstance(user.last_name, str)
+        self.assertEqual(user.last_name, "")
+
+    def test_email(self):
+        """Test email class attribute"""
+        user = User()
+        self.assertIsInstance(user.email, str)
+        self.assertEqual(user.email, "")
+
+    def test_password(self):
+        """Test password class attribute"""
+        user = User()
+        self.assertIsInstance(user.password, str)
+        self.assertEqual(user.password, "")
+
 
 if __name__ == "__main__":
     unittest.main()
